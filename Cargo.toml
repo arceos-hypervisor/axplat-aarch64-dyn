@@ -1,0 +1,27 @@
+[package]
+edition = "2024"
+name = "axplat-aarch64-dyn"
+version = "0.1.0"
+
+[features]
+fp-simd = ["axcpu/fp-simd"]
+hv = []
+irq = ["axplat/irq"]
+smp = ["axplat/smp"]
+
+[dependencies]
+aarch64-cpu = "10"
+aarch64-cpu-ext = "0.1"
+any-uart = "0.2.11"
+axconfig-macros = "0.2"
+axcpu = "0.2"
+axplat = "0.1"
+fdt-parser = "0.4"
+heapless = "0.8"
+lazyinit = "0.2"
+log = "0.4"
+memory_addr = "0.3"
+pie-boot = {version = "0.2.12"}
+rdrive = "0.15"
+smccc = "0.2"
+spin = "0.10"
