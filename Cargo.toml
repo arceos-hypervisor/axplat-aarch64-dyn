@@ -5,7 +5,7 @@ version = "0.1.0"
 
 [features]
 fp-simd = ["axcpu/fp-simd"]
-hv = []
+hv = ["pie-boot/hv"]
 irq = ["axplat/irq"]
 smp = ["axplat/smp"]
 
