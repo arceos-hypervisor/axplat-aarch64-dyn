@@ -3,7 +3,7 @@ use core::ops::Range;
 use axplat::mem::{MemIf, PhysAddr, RawRange, VirtAddr};
 use heapless::Vec;
 use memory_addr::MemoryAddr;
-use pie_boot::{KIMAGE_VADDR, KLINER_OFFSET, MemoryRegionKind, boot_info};
+use pie_boot::{KIMAGE_VADDR, KIMAGE_VSIZE, KLINER_OFFSET, MemoryRegionKind, boot_info};
 use spin::Once;
 
 struct MemIfImpl;
@@ -12,9 +12,6 @@ static RAM_LIST: Once<Vec<RawRange, 32>> = Once::new();
 static RESERVED_LIST: Once<Vec<RawRange, 32>> = Once::new();
 static MMIO: Once<Vec<RawRange, 32>> = Once::new();
 static mut VA_OFFSET: usize = 0;
-
-
-
 
 fn va_offset() -> usize {
     unsafe { VA_OFFSET }
@@ -113,7 +110,7 @@ impl MemIf for MemIfImpl {
         }
     }
     fn virt_to_phys(p: VirtAddr) -> PhysAddr {
-        if (KIMAGE_VADDR..KLINER_OFFSET).contains(&p.as_usize()) {
+        if (KIMAGE_VADDR..KIMAGE_VADDR + KIMAGE_VSIZE).contains(&p.as_usize()) {
             PhysAddr::from_usize(p.as_usize() - va_offset())
         } else {
             PhysAddr::from_usize(p.as_usize() - KLINER_OFFSET)

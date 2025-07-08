@@ -77,7 +77,7 @@ impl InitIf for InitIfImpl {
         unsafe extern "C" {
             fn _percpu_start();
         }
-
+        crate::time::enable();
         driver::setup();
         #[cfg(feature = "irq")]
         {
@@ -94,6 +94,7 @@ impl InitIf for InitIfImpl {
     fn init_later_secondary(_cpu_id: usize) {
         dcache_all(CacheOp::CleanAndInvalidate);
 
+        crate::time::enable();
         #[cfg(feature = "irq")]
         {
             crate::irq::init_current_cpu();

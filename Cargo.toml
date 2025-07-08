@@ -5,7 +5,7 @@ version = "0.1.0"
 
 [features]
 fp-simd = ["axcpu/fp-simd"]
-hv = ["pie-boot/hv"]
+hv = ["pie-boot/hv", "page_table_entry/arm-el2", "percpu/arm-el2", "axcpu/arm-el2"]
 irq = ["axplat/irq"]
 smp = ["axplat/smp"]
 
@@ -22,8 +22,10 @@ lazyinit = "0.2"
 log = "0.4"
 memory_addr = "0.4"
 page_table_multiarch = "0.5.5"
-percpu = "0.2"
+percpu = {version ="0.2"}
+# pie-boot = {path = "/home/zhourui/opensource/pie-boot/pie-boot"}
 pie-boot = {version = "0.2"}
+page_table_entry = {version = "0.5"}
 rdrive = "0.15"
 smccc = "0.2"
 spin = "0.10"

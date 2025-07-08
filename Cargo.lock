@@ -209,6 +209,7 @@ dependencies = [
  "lazyinit",
  "log",
  "memory_addr",
+ "page_table_entry",
  "page_table_multiarch",
  "percpu",
  "pie-boot",
@@ -1085,9 +1086,9 @@ dependencies = [
 
 [[package]]
 name = "kdef-pgtable"
-version = "0.1.2"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e679d999335b7055935ae9cd13aac3116e54d5cfb127cb9b53791e08ef63306b"
+checksum = "fe55002bb265659921e59528cadf0d07362ebc0f37986d9b004bc45264036bf5"
 dependencies = [
  "bitflags 2.9.1",
  "prettyplease",
@@ -1420,9 +1421,9 @@ dependencies = [
 
 [[package]]
 name = "pie-boot"
-version = "0.2.17"
+version = "0.2.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8230ab58d3da4b53ac6440679508b1381c6a3ba6f5a7aeb8c40940f2337adeff"
+checksum = "af3a9eb101bc244ead6befeef29126479525a02a5c467b8461094964b8c7e945"
 dependencies = [
  "aarch64-cpu",
  "aarch64-cpu-ext",
@@ -1447,9 +1448,9 @@ dependencies = [
 
 [[package]]
 name = "pie-boot-loader-aarch64"
-version = "0.1.23"
+version = "0.1.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a8f8c65ad2b227cbd0035aad32c12d85b7ec6283a7579da6d804149e3891f90"
+checksum = "9ff1ed7dcbdb74f049cb423bf5c4a58c5bbd1794b8f6e2af566931ba7b9919ab"
 dependencies = [
  "aarch64-cpu",
  "aarch64-cpu-ext",

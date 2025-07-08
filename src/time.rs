@@ -47,11 +47,31 @@ impl TimeIf for TimeIfImpl {
         if cnptct < cnptct_deadline {
             let interval = cnptct_deadline - cnptct;
             debug_assert!(interval <= u32::MAX as u64);
-            CNTP_TVAL_EL0.set(interval);
+            set_tval(interval);
         } else {
-            CNTP_TVAL_EL0.set(0);
+            set_tval(0);
         }
     }
+}
+
+fn set_tval(tval: u64) {
+    #[cfg(feature = "hv")]
+    unsafe {
+        core::arch::asm!("msr CNTHP_TVAL_EL2, {0:x}", in(reg) tval);
+    }
+    #[cfg(not(feature = "hv"))]
+    CNTP_TVAL_EL0.set(tval);
+}
+
+#[cfg(feature = "hv")]
+pub fn enable() {
+    CNTHP_CTL_EL2.write(CNTHP_CTL_EL2::ENABLE::SET);
+    set_tval(0);
+}
+#[cfg(not(feature = "hv"))]
+pub fn enable() {
+    CNTP_CTL_EL0.write(CNTP_CTL_EL0::ENABLE::SET);
+    set_tval(0);
 }
 
 #[cfg(feature = "irq")]
@@ -62,8 +82,6 @@ impl TimeIf for TimeIfImpl {
 pub fn enable_irqs() {
     use crate::config::devices::TIMER_IRQ;
 
-    CNTP_CTL_EL0.write(CNTP_CTL_EL0::ENABLE::SET);
-    CNTP_TVAL_EL0.set(0);
     let irq_raw: usize = TIMER_IRQ_CONFIG.irq.into();
 
     assert_eq!(
