@@ -210,7 +210,6 @@ dependencies = [
  "log",
  "memory_addr",
  "page_table_entry",
- "page_table_multiarch",
  "percpu",
  "pie-boot",
  "rdrive",

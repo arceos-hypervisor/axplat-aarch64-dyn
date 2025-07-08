@@ -21,7 +21,6 @@ heapless = "0.8"
 lazyinit = "0.2"
 log = "0.4"
 memory_addr = "0.4"
-page_table_multiarch = "0.5.5"
 percpu = {version ="0.2"}
 pie-boot = {version = "0.2"}
 page_table_entry = {version = "0.5"}
