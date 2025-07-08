@@ -213,8 +213,10 @@ dependencies = [
  "percpu",
  "pie-boot",
  "rdrive",
+ "serde",
  "smccc",
  "spin 0.10.0",
+ "toml",
 ]
 
 [[package]]

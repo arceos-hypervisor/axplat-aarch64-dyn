@@ -22,8 +22,12 @@ lazyinit = "0.2"
 log = "0.4"
 memory_addr = "0.4"
 page_table_multiarch = "0.5.5"
+percpu = "0.2"
 pie-boot = {version = "0.2.12"}
 rdrive = "0.15"
 smccc = "0.2"
 spin = "0.10"
-percpu = "0.2"
+
+[build-dependencies]
+serde = {version = "1.0", features = ["derive"]}
+toml = "0.8"

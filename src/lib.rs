@@ -9,15 +9,15 @@ use core::ptr::NonNull;
 
 use axplat::mem::phys_to_virt;
 use fdt_parser::Fdt;
-use pie_boot::BootInfo;
 
+mod boot;
 mod console;
 mod driver;
 mod init;
 #[cfg(feature = "irq")]
 mod irq;
 mod mem;
-mod paging;
+// mod paging;
 mod power;
 #[cfg(feature = "smp")]
 mod smp;
@@ -25,11 +25,6 @@ mod time;
 
 pub mod config {
     axconfig_macros::include_configs!(path_env = "AX_CONFIG_PATH", fallback = "axconfig.toml");
-}
-
-#[pie_boot::entry]
-fn main(args: &BootInfo) -> ! {
-    axplat::call_main(0, args.fdt.map(|p| p.as_ptr() as usize).unwrap_or_default());
 }
 
 fn fdt() -> Fdt<'static> {

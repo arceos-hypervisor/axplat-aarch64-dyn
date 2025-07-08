@@ -1,6 +1,6 @@
 OUTPUT_ARCH(aarch64)
 
-__SMP = 1;
+__SMP = {{SMP}};
 
 INCLUDE "pie_boot.x"
 
@@ -106,5 +106,5 @@ SECTIONS {
 }
 INSERT AFTER .tbss;
 
-__kernel_load_end = _etdata;
+__kernel_load_end = _edata;
 __kernel_code_end = _ekernel;

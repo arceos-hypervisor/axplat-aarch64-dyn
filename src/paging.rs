@@ -115,7 +115,7 @@ pub fn init() {
     // unsafe{
     //     axcpu::asm::write_kernel_page_table(pt.root_paddr());
     // }
-    // unsafe { axcpu::init::init_mmu(pt.root_paddr()) };
+    unsafe { axcpu::init::init_mmu(pt.root_paddr()) };
 }
 
 pub fn tb_range() -> (usize, usize) {

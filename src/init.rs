@@ -1,10 +1,7 @@
-use core::ptr::addr_of;
-
 use aarch64_cpu_ext::cache::{CacheOp, dcache_all};
 use axplat::init::InitIf;
-use log::info;
 
-use crate::{console, driver, paging};
+use crate::{console, driver};
 
 struct InitIfImpl;
 
@@ -37,7 +34,6 @@ impl InitIf for InitIfImpl {
     fn init_early(_cpu_id: usize, _arg: usize) {
         console::setup_early();
         axcpu::init::init_trap();
-        // paging::init();
         crate::mem::setup();
     }
 
@@ -81,27 +77,6 @@ impl InitIf for InitIfImpl {
         unsafe extern "C" {
             fn _percpu_start();
         }
-        info!("Per-CPU data start at {:#x}", _percpu_start as usize);
-
-        // let real = unsafe{ __PERCPU_CPU_ID};
-        let ptr: usize;
-        unsafe {
-            core::arch::asm!(
-                "adrp {0}, :got:{1}",
-                "add {0}, {0}, :lo12:{1}",
-                out(reg) ptr,
-                sym __PERCPU_CPU_ID
-            );
-        }
-
-        info!(
-            "{:p} offset {:#x} real {:#x}",
-            unsafe { CPU_ID.current_ptr() },
-            CPU_ID.offset(),
-            ptr,
-        );
-
-        console_println!("CPU ID: {:#x}", CPU_ID.read_current());
 
         driver::setup();
         #[cfg(feature = "irq")]
@@ -118,11 +93,7 @@ impl InitIf for InitIfImpl {
     #[cfg(feature = "smp")]
     fn init_later_secondary(_cpu_id: usize) {
         dcache_all(CacheOp::CleanAndInvalidate);
-        info!(
-            "scpu {:p} offset {:#x}",
-            unsafe { CPU_ID.current_ptr() },
-            CPU_ID.offset()
-        );
+
         #[cfg(feature = "irq")]
         {
             crate::irq::init_current_cpu();
@@ -130,5 +101,3 @@ impl InitIf for InitIfImpl {
         }
     }
 }
-#[percpu::def_percpu]
-static CPU_ID: usize = 555;

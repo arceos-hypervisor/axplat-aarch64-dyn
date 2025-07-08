@@ -13,6 +13,9 @@ static RESERVED_LIST: Once<Vec<RawRange, 32>> = Once::new();
 static MMIO: Once<Vec<RawRange, 32>> = Once::new();
 static mut VA_OFFSET: usize = 0;
 
+
+
+
 fn va_offset() -> usize {
     unsafe { VA_OFFSET }
 }
@@ -59,7 +62,7 @@ pub fn setup() {
         {
             let _ = rsv_list.push(region);
         }
-        rsv_list.push(crate::paging::tb_range()).unwrap();
+        // rsv_list.push(crate::paging::tb_range()).unwrap();
 
         rsv_list
     });
