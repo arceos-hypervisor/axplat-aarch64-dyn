@@ -63,7 +63,7 @@ impl IrqIf for IrqIfImpl {
         let irq_num: usize = irq.into();
         trace!("IRQ {}", irq_num);
         if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
-            warn!("Unhandled IRQ {}", irq_num);
+            warn!("Unhandled IRQ {irq_num}");
         }
 
         CPU_IF.eoi(irq);
@@ -103,7 +103,7 @@ pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool
         irq_raw,
         enabled,
         match trigger {
-            Some(t) => format!("trigger: {:?}", t),
+            Some(t) => format!("trigger: {t:?}"),
             None => String::new(),
         }
     );
@@ -137,5 +137,5 @@ pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool
             intc.irq_disable(irq).expect("failed to disable IRQ");
         }
     }
-    debug!("IRQ({:#x}) set enable done", irq_raw);
+    debug!("IRQ({irq_raw:#x}) set enable done");
 }

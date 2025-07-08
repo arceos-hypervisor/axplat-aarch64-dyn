@@ -59,6 +59,8 @@ pub fn setup() {
         {
             let _ = rsv_list.push(region);
         }
+        rsv_list.push(crate::paging::tb_range()).unwrap();
+
         rsv_list
     });
 

@@ -168,7 +168,7 @@ dependencies = [
  "linkme",
  "log",
  "loongArch64",
- "memory_addr 0.4.0",
+ "memory_addr",
  "page_table_entry",
  "page_table_multiarch",
  "percpu",
@@ -191,7 +191,7 @@ dependencies = [
  "crate_interface",
  "handler_table",
  "kspin",
- "memory_addr 0.4.0",
+ "memory_addr",
 ]
 
 [[package]]
@@ -208,7 +208,9 @@ dependencies = [
  "heapless",
  "lazyinit",
  "log",
- "memory_addr 0.3.2",
+ "memory_addr",
+ "page_table_multiarch",
+ "percpu",
  "pie-boot",
  "rdrive",
  "smccc",
@@ -1200,12 +1202,6 @@ checksum = "32a282da65faaf38286cf3be983213fcf1d2e2a58700e808f83f4ea9a4804bc0"
 
 [[package]]
 name = "memory_addr"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5438b8df0f13e16e1f46140de247695a95952a5a4479e47197a8711bf1063373"
-
-[[package]]
-name = "memory_addr"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d4054cba279515fa87761b101d857333ce06391dbe8f18a11347204a7111416"
@@ -1368,7 +1364,7 @@ checksum = "ba811ef8ca8fb33d776e128624cb4fe25c9804cab96f83b822d4322431e6dd5a"
 dependencies = [
  "aarch64-cpu",
  "bitflags 2.9.1",
- "memory_addr 0.4.0",
+ "memory_addr",
  "x86_64",
 ]
 
@@ -1379,7 +1375,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98cb76e21ce462270afd83b331599d5b83f876c2a98c0a70382b20d73e1da6be"
 dependencies = [
  "log",
- "memory_addr 0.4.0",
+ "memory_addr",
  "page_table_entry",
  "riscv",
  "x86",
@@ -1422,9 +1418,9 @@ dependencies = [
 
 [[package]]
 name = "pie-boot"
-version = "0.2.13"
+version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5d5bb6cb61bce9e4818a65cf17b36878c956e9677c4be97a32ae11fb5660a0fb"
+checksum = "2cac3c93be493f195a0c7b6d0e0b618b05f752cffed1cc9dc159e57b7923897a"
 dependencies = [
  "bindeps-simple",
  "fdt-parser",
@@ -1438,18 +1434,18 @@ dependencies = [
 
 [[package]]
 name = "pie-boot-if"
-version = "0.5.0"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "04ba4eb3bbf609c19dbfa5c705f0b96bb189f5787301d772cd360578bd4ef97b"
+checksum = "c00af8d4efee0eee91ead95b34c50c067163dc4c90b874b1cc4caa671eb1d85b"
 dependencies = [
  "heapless",
 ]
 
 [[package]]
 name = "pie-boot-loader-aarch64"
-version = "0.1.19"
+version = "0.1.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e23c2c33ab533b93e194f3c1aaa34c1283f03e2b3f9fafe6ddf06c1c782e225d"
+checksum = "527da5ecc6d10a9b6f1da179526c40ef6013b9c7ab8e417c15e570d882b7d0ca"
 dependencies = [
  "aarch64-cpu",
  "any-uart",

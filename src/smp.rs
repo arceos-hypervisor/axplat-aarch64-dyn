@@ -9,8 +9,8 @@ use spin::Once;
 use crate::{config::plat::CPU_NUM, fdt};
 
 static CPU_ID_LIST: Once<Vec<usize>> = Once::new();
-static mut BOOT_PT_L0: usize = 0;
 static mut PHYS_VIRT_OFFSET: usize = 0;
+static mut BOOT_PT: usize = 0;
 
 pub fn init() {
     CPU_ID_LIST.call_once(|| {
@@ -46,14 +46,8 @@ pub fn init() {
 
     unsafe {
         let offset = boot_info().kcode_offset();
-        let boot_pt = boot_info().pg_start as _;
         PHYS_VIRT_OFFSET = offset;
-        BOOT_PT_L0 = boot_pt;
-
-        debug!(
-            "PHYS_VIRT_OFFSET: {:#x}, BOOT_PT_L0: {:#x}",
-            offset, boot_pt
-        );
+        BOOT_PT = boot_info().pg_start as usize;
     }
 }
 
@@ -102,6 +96,8 @@ pub(crate) fn secondary_entry_phys_addr() -> PhysAddr {
 #[unsafe(link_section = ".text.boot")]
 unsafe extern "C" fn _start_secondary() -> ! {
     // X0 = stack pointer
+
+    // use crate::paging::BOOT_PT;
     core::arch::naked_asm!("
         mrs     x19, mpidr_el1
         and     x19, x19, #0xffffff     // get current CPU id
@@ -122,7 +118,7 @@ unsafe extern "C" fn _start_secondary() -> ! {
         switch_to_el1 = sym axcpu::init::switch_to_el1,
         init_mmu = sym axcpu::init::init_mmu,
         enable_fp = sym axcpu::asm::enable_fp,
-        boot_pt = sym BOOT_PT_L0,
+        boot_pt = sym BOOT_PT,
         phys_virt_offset = sym PHYS_VIRT_OFFSET,
         entry = sym _secondary_main,
     )

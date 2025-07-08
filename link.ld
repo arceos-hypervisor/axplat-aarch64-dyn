@@ -1,6 +1,6 @@
 OUTPUT_ARCH(aarch64)
 
-__SMP = 4;
+__SMP = 1;
 
 INCLUDE "pie_boot.x"
 
