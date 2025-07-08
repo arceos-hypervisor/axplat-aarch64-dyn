@@ -158,9 +158,9 @@ dependencies = [
 
 [[package]]
 name = "axcpu"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "835db849dcf67c2e67fd8efb70351365d4268c37b12970ef4cf25bb1d4c12187"
+checksum = "21666fe462527cb76548c9f5b142dde90e09b065af63c515e726592d13ebda54"
 dependencies = [
  "aarch64-cpu",
  "cfg-if",
@@ -875,9 +875,9 @@ dependencies = [
 
 [[package]]
 name = "hyper-util"
-version = "0.1.14"
+version = "0.1.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc2fdfdbff08affe55bb779f33b053aa1fe5dd5b54c257343c17edfa55711bdb"
+checksum = "7f66d5bd4c6f02bf0542fad85d626775bab9258cf795a4256dcaf3161114d1df"
 dependencies = [
  "base64",
  "bytes",
@@ -1420,10 +1420,12 @@ dependencies = [
 
 [[package]]
 name = "pie-boot"
-version = "0.2.14"
+version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2cac3c93be493f195a0c7b6d0e0b618b05f752cffed1cc9dc159e57b7923897a"
+checksum = "8230ab58d3da4b53ac6440679508b1381c6a3ba6f5a7aeb8c40940f2337adeff"
 dependencies = [
+ "aarch64-cpu",
+ "aarch64-cpu-ext",
  "bindeps-simple",
  "fdt-parser",
  "heapless",
@@ -1445,11 +1447,12 @@ dependencies = [
 
 [[package]]
 name = "pie-boot-loader-aarch64"
-version = "0.1.20"
+version = "0.1.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "527da5ecc6d10a9b6f1da179526c40ef6013b9c7ab8e417c15e570d882b7d0ca"
+checksum = "1a8f8c65ad2b227cbd0035aad32c12d85b7ec6283a7579da6d804149e3891f90"
 dependencies = [
  "aarch64-cpu",
+ "aarch64-cpu-ext",
  "any-uart",
  "bitflags 2.9.1",
  "fdt-parser",
@@ -1468,9 +1471,9 @@ dependencies = [
 
 [[package]]
 name = "pie-boot-macros"
-version = "0.1.1"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d8edae9253774c13d265b9134f596eb20734d321aa90d4e97b36d84485c4d5b3"
+checksum = "9402ab23e9e60727a37c831726126827f376de3e53478d3abc9adfbff4aa7ff3"
 dependencies = [
  "darling",
  "proc-macro2",

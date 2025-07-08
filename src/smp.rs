@@ -1,6 +1,5 @@
-use aarch64_cpu_ext::cache::{CacheOp, dcache_all};
 use alloc::vec::Vec;
-use axplat::mem::{PhysAddr, va, virt_to_phys};
+use axplat::mem::PhysAddr;
 use fdt_parser::Status;
 use log::{debug, info};
 use pie_boot::boot_info;
@@ -30,7 +29,7 @@ pub fn init() {
 
     if CPU_ID_LIST.wait().len() < CPU_NUM {
         panic!(
-            "CPU count {} is less than expected `cpu_num` in `.axconfig.toml` is {}",
+            "CPU count {} is less than expected `cpu_num` in `.axconfig.toml` with {}",
             CPU_ID_LIST.wait().len(),
             CPU_NUM
         );
@@ -38,7 +37,7 @@ pub fn init() {
 
     if CPU_ID_LIST.wait().len() > CPU_NUM {
         info!(
-            "CPU count {} is more than expected `cpu_num` in `.axconfig.toml` is {}",
+            "CPU count {} is more than expected `cpu_num` in `.axconfig.toml` with {}",
             CPU_ID_LIST.wait().len(),
             CPU_NUM
         );
@@ -87,45 +86,5 @@ pub fn cpu_id_to_idx(cpu_id: usize) -> usize {
 }
 
 pub(crate) fn secondary_entry_phys_addr() -> PhysAddr {
-    virt_to_phys(va!(_start_secondary as usize))
-}
-
-/// The earliest entry point for the secondary CPUs.
-#[cfg(feature = "smp")]
-#[unsafe(naked)]
-#[unsafe(link_section = ".text.boot")]
-unsafe extern "C" fn _start_secondary() -> ! {
-    // X0 = stack pointer
-
-    // use crate::paging::BOOT_PT;
-    core::arch::naked_asm!("
-        mrs     x19, mpidr_el1
-        and     x19, x19, #0xffffff     // get current CPU id
-
-        mov     sp, x0
-        bl      {switch_to_el1}
-        bl      {enable_fp}
-        ldr     x0, {boot_pt}
-        bl      {init_mmu}
-
-        ldr     x8, {phys_virt_offset}  // load PHYS_VIRT_OFFSET global variable
-        add     sp, sp, x8
-
-        mov     x0, x19                 // call_secondary_main(cpu_id)
-        ldr     x8, ={entry}
-        blr     x8
-        b      .",
-        switch_to_el1 = sym axcpu::init::switch_to_el1,
-        init_mmu = sym axcpu::init::init_mmu,
-        enable_fp = sym axcpu::asm::enable_fp,
-        boot_pt = sym BOOT_PT,
-        phys_virt_offset = sym PHYS_VIRT_OFFSET,
-        entry = sym _secondary_main,
-    )
-}
-
-fn _secondary_main(cpu_id: usize) -> ! {
-    dcache_all(CacheOp::CleanAndInvalidate);
-    let cpu_idx = cpu_id_to_idx(cpu_id);
-    axplat::call_secondary_main(cpu_idx)
+    pie_boot::secondary_entry_addr().into()
 }
