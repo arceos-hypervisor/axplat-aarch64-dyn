@@ -182,8 +182,7 @@ dependencies = [
 [[package]]
 name = "axplat"
 version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c86cdb48cf1fbd432f4326ab0852b696ac49442b0ea0aed3401cb0bbe370a19f"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates?branch=vmm#e4c656f899b0013f3759a272144dbcd73ec5b251"
 dependencies = [
  "axplat-macros",
  "bitflags 2.9.1",
@@ -222,8 +221,7 @@ dependencies = [
 [[package]]
 name = "axplat-macros"
 version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f90dfaee06a112fe4f810c60af1a86bc080af2172185b491cacc307b84dff748"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates?branch=vmm#e4c656f899b0013f3759a272144dbcd73ec5b251"
 dependencies = [
  "proc-macro2",
  "quote",
