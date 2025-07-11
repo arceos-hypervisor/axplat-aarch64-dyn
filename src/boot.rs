@@ -3,7 +3,6 @@ use core::arch::naked_asm;
 use aarch64_cpu_ext::cache::{CacheOp, dcache_all};
 use pie_boot::BootInfo;
 
-use crate::smp::cpu_id_to_idx;
 const BOOT_STACK_SIZE: usize = 0x40000; // 256KB
 
 #[unsafe(link_section = ".bss.stack")]
@@ -35,9 +34,10 @@ fn sp_reset(args: &BootInfo) -> ! {
     axplat::call_main(0, args.fdt.map(|p| p.as_ptr() as usize).unwrap_or_default());
 }
 
+#[cfg(feature = "smp")]
 #[pie_boot::secondary_entry]
 fn secondary(cpu_id: usize) {
     dcache_all(CacheOp::CleanAndInvalidate);
-    let cpu_idx = cpu_id_to_idx(cpu_id);
+    let cpu_idx = crate::smp::cpu_id_to_idx(cpu_id);
     axplat::call_secondary_main(cpu_idx)
 }
