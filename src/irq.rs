@@ -56,10 +56,16 @@ impl IrqIf for IrqIfImpl {
     /// It is called by the common interrupt handler. It should look up in the
     /// IRQ handler table and calls the corresponding handler. If necessary, it
     /// also acknowledges the interrupt controller after handling.
-    fn handle(_unused: usize) {
-        let Some(irq) = CPU_IF.ack() else {
-            return;
+    fn handle(irq: usize) {
+        let irq = if irq == 0 {
+            let Some(irq) = CPU_IF.ack() else {
+                return;
+            };
+            irq
+        } else {
+            IrqId::from(irq)
         };
+
         let irq_num: usize = irq.into();
         trace!("IRQ {}", irq_num);
         if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
