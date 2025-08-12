@@ -69,8 +69,7 @@ impl IrqIf for IrqIfImpl {
         let irq_num: usize = irq.into();
         trace!("IRQ {}", irq_num);
         if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
-            // warn!("Unhandled IRQ {irq_num}");
-            return;
+            warn!("Unhandled IRQ {irq_num}");
         }
 
         CPU_IF.eoi(irq);
