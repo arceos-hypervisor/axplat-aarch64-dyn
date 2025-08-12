@@ -64,6 +64,7 @@ impl IrqIf for IrqIfImpl {
         trace!("IRQ {}", irq_num);
         if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
             warn!("Unhandled IRQ {irq_num}");
+            return;
         }
 
         CPU_IF.eoi(irq);
