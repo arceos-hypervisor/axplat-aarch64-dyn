@@ -182,7 +182,7 @@ dependencies = [
 [[package]]
 name = "axplat"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates?branch=vmm#7aaceecbb446abac7e3eeafa03e5a6e257fea575"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates#1540b43433377aaf432ad4ce2fac70d07a99d754"
 dependencies = [
  "axplat-macros",
  "bitflags 2.9.2",
@@ -221,7 +221,7 @@ dependencies = [
 [[package]]
 name = "axplat-macros"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates?branch=vmm#7aaceecbb446abac7e3eeafa03e5a6e257fea575"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates#1540b43433377aaf432ad4ce2fac70d07a99d754"
 dependencies = [
  "proc-macro2",
  "quote",

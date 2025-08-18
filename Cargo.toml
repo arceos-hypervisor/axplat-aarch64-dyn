@@ -15,7 +15,7 @@ aarch64-cpu-ext = "0.1"
 any-uart = "0.2.11"
 axconfig-macros = "0.2"
 axcpu = "0.2"
-axplat = {git = "https://github.com/arceos-hypervisor/axplat_crates", branch = "vmm"}
+axplat = {git = "https://github.com/arceos-hypervisor/axplat_crates"}
 fdt-parser = "0.4"
 heapless = "0.8"
 lazyinit = "0.2"
