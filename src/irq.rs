@@ -77,17 +77,6 @@ impl IrqIf for IrqIfImpl {
             CPU_IF.dir(irq);
         }
     }
-
-    fn irq_fetch() -> usize {
-        let irq = CPU_IF.ack();
-        if let Some(irq) = irq {
-            trace!("IRQ fetched: {irq:?}");
-            irq.into()
-        } else {
-            trace!("No IRQ fetched");
-            0
-        }
-    }
 }
 
 pub(crate) fn init() {
