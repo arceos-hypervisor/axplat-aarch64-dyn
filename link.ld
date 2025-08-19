@@ -3,6 +3,7 @@ OUTPUT_ARCH(aarch64)
 __SMP = {{SMP}};
 
 INCLUDE "pie_boot.x"
+STACK_SIZE = 0x40000;
 
 ENTRY(_start)
 SECTIONS
@@ -75,20 +76,28 @@ SECTIONS
     _edata = .;
 
     .bss : AT(.) ALIGN(4K) {
+        __cpu0_stack = .;
+        . += STACK_SIZE;
+        __cpu0_stack_top = .;
+
         boot_stack = .;
         *(.bss.stack)
         . = ALIGN(4K);
         boot_stack_top = .;
 
         _sbss = .;
+        __bss_start = .;
         *(.bss .bss.*)
         *(.sbss .sbss.*)
         *(COMMON)
         . = ALIGN(4K);
+
         _ebss = .;
+        __bss_stop = .;
     }
 
     _ekernel = .;
+    __kernel_code_end = .;
 
 	/DISCARD/ : {
         *(.comment) *(.gnu*) *(.note*) *(.eh_frame*)
@@ -108,3 +117,4 @@ INSERT AFTER .tbss;
 
 __kernel_load_end = _edata;
 __kernel_code_end = _ekernel;
+ASSERT(STACK_SIZE != 0x0, "STACK_SIZE must be defined");
