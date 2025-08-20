@@ -2,7 +2,7 @@ use alloc::{format, string::String};
 pub use arm_gic_driver::v3::Gic;
 use arm_gic_driver::v3::*;
 use lazyinit::LazyInit;
-use log::{debug, info, trace, warn};
+use log::*;
 use spin::Mutex;
 
 use crate::irq;
