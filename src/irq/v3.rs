@@ -2,7 +2,7 @@ use alloc::{format, string::String};
 pub use arm_gic_driver::v3::Gic;
 use arm_gic_driver::v3::*;
 use lazyinit::LazyInit;
-use log::{debug, warn};
+use log::{debug, info, trace, warn};
 use spin::Mutex;
 
 use crate::irq;
@@ -29,6 +29,7 @@ pub fn init_current_cpu() {
 pub fn handle(_unused: usize) {
     let ack = TRAP.ack1();
     let irq_num = ack.to_u32();
+    // info!("IRQ {}", irq_num);
     if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
         warn!("Unhandled IRQ {irq_num}");
     }

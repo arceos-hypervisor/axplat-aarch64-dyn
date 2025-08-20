@@ -15,7 +15,7 @@ aarch64-cpu-ext = "0.1"
 any-uart = "0.2.11"
 axconfig-macros = "0.2"
 axcpu = "0.2"
-axplat = {git = "https://github.com/arceos-hypervisor/axplat_crates"}
+axplat = "0.1"
 fdt-parser = "0.4"
 heapless = "0.8"
 lazyinit = "0.2"
@@ -26,7 +26,6 @@ somehal = {version = "0.3"}
 page_table_entry = {version = "0.5"}
 rdrive = "0.16"
 arm-gic-driver = {version = "0.15.3", features = ["rdif"]}
-# rdrive = {version="0.16", path = "/home/zhourui/opensource/rdrive/rdrive"}
 spin = "0.10"
 paste = "1.0"
 

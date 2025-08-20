@@ -2,7 +2,7 @@ use alloc::{format, string::String};
 pub use arm_gic_driver::v2::Gic;
 use arm_gic_driver::v2::*;
 use lazyinit::LazyInit;
-use log::{debug, warn};
+use log::*;
 use spin::Mutex;
 
 use crate::irq::{self, current_cpu};
@@ -33,6 +33,7 @@ pub fn handle(_unused: usize) {
         Ack::Other(intid) => intid,
     }
     .to_u32();
+    // info!("IRQ {}", irq_num);
     if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
         warn!("Unhandled IRQ {irq_num}");
     }
