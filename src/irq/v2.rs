@@ -26,10 +26,14 @@ pub fn init_current_cpu() {
     cpu.set_eoi_mode_ns(false);
 }
 
-pub fn handle(irq_num: usize) {
+pub fn handle(_unused: usize) {
     let ack = TRAP.ack();
-
-    if !IRQ_HANDLER_TABLE.handle(irq_num) {
+    let irq_num = match ack {
+        Ack::SGI { intid, cpu_id: _ } => intid,
+        Ack::Other(intid) => intid,
+    }
+    .to_u32();
+    if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
         warn!("Unhandled IRQ {irq_num}");
     }
 

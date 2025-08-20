@@ -19,17 +19,17 @@ fn use_gicd(f: impl FnOnce(&mut Gic)) {
 
 pub fn init_current_cpu() {
     let mut cpu = CPU_IF.lock();
-    cpu.init_current_cpu();
+    cpu.init_current_cpu().unwrap();
     #[cfg(feature = "hv")]
     cpu.set_eoi_mode(true);
     #[cfg(not(feature = "hv"))]
     cpu.set_eoi_mode(false);
 }
 
-pub fn handle(irq_num: usize) {
+pub fn handle(_unused: usize) {
     let ack = TRAP.ack1();
-
-    if !IRQ_HANDLER_TABLE.handle(irq_num) {
+    let irq_num = ack.to_u32();
+    if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
         warn!("Unhandled IRQ {irq_num}");
     }
 
