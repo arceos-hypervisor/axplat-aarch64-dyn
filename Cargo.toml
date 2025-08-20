@@ -5,7 +5,7 @@ version = "0.1.0"
 
 [features]
 fp-simd = ["axcpu/fp-simd"]
-hv = ["pie-boot/hv", "page_table_entry/arm-el2", "percpu/arm-el2", "axcpu/arm-el2"]
+hv = ["somehal/hv", "page_table_entry/arm-el2", "percpu/arm-el2", "axcpu/arm-el2"]
 irq = ["axplat/irq"]
 smp = ["axplat/smp"]
 
@@ -22,11 +22,12 @@ lazyinit = "0.2"
 log = "0.4"
 memory_addr = "0.4"
 percpu = {version ="0.2"}
-pie-boot = {version = "0.2"}
+somehal = {version = "0.3"}
 page_table_entry = {version = "0.5"}
-rdrive = "0.15"
-smccc = "0.2"
+rdrive = "0.16"
+arm-gic-driver = {version = "0.15.3", features = ["rdif"]}
 spin = "0.10"
+paste = "1.0"
 
 [build-dependencies]
 serde = {version = "1.0", features = ["derive"]}

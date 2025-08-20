@@ -1,7 +1,7 @@
 use any_uart::{Receiver, Sender};
 use axplat::console::ConsoleIf;
 use fdt_parser::Fdt;
-use pie_boot::boot_info;
+use somehal::boot_info;
 use spin::Mutex;
 
 static TX: Mutex<Option<Sender>> = Mutex::new(None);

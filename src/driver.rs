@@ -1,4 +1,4 @@
-use pie_boot::boot_info;
+use somehal::boot_info;
 use rdrive::{Platform, init, probe_pre_kernel};
 
 pub fn setup() {

@@ -2,8 +2,9 @@ use core::ops::Range;
 
 use axplat::mem::{MemIf, PhysAddr, RawRange, VirtAddr};
 use heapless::Vec;
+use log::trace;
 use memory_addr::MemoryAddr;
-use pie_boot::{KIMAGE_VADDR, KIMAGE_VSIZE, KLINER_OFFSET, MemoryRegionKind, boot_info};
+use somehal::{KIMAGE_VADDR, KIMAGE_VSIZE, KLINER_OFFSET, MemoryRegionKind, boot_info};
 use spin::Once;
 
 struct MemIfImpl;
@@ -59,8 +60,6 @@ pub fn setup() {
         {
             let _ = rsv_list.push(region);
         }
-        // rsv_list.push(crate::paging::tb_range()).unwrap();
-
         rsv_list
     });
 
@@ -82,7 +81,12 @@ impl MemIf for MemIfImpl {
     /// All memory ranges except reserved ranges (including the kernel loaded
     /// range) are free for allocation.
     fn phys_ram_ranges() -> &'static [RawRange] {
-        RAM_LIST.wait()
+        let ls = RAM_LIST.wait();
+        for range in ls {
+            trace!("RAM range: {:#x?}", range);
+        }
+
+        ls
     }
 
     /// Returns all reserved physical memory ranges on the platform.

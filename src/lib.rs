@@ -28,7 +28,7 @@ pub mod config {
 }
 
 fn fdt() -> Fdt<'static> {
-    let paddr = pie_boot::boot_info()
+    let paddr = somehal::boot_info()
         .fdt
         .expect("FDT is not available, please check the bootloader configuration");
     let addr = phys_to_virt((paddr.as_ptr() as usize).into());

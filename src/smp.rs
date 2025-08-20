@@ -1,8 +1,7 @@
 use alloc::vec::Vec;
-use axplat::mem::PhysAddr;
 use fdt_parser::Status;
 use log::{debug, info};
-use pie_boot::boot_info;
+use somehal::boot_info;
 use spin::Once;
 
 use crate::{config::plat::CPU_NUM, fdt};
@@ -83,8 +82,4 @@ pub fn cpu_id_to_idx(cpu_id: usize) -> usize {
     } else {
         panic!("CPU ID {} not found in the list", cpu_id);
     }
-}
-
-pub(crate) fn secondary_entry_phys_addr() -> PhysAddr {
-    pie_boot::secondary_entry_addr().into()
 }
