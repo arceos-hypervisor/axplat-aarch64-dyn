@@ -1,5 +1,4 @@
 use alloc::vec::Vec;
-use axplat::mem::PhysAddr;
 use fdt_parser::Status;
 use log::{debug, info};
 use somehal::boot_info;
