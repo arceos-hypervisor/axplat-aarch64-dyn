@@ -103,13 +103,6 @@ pub(crate) fn init_current_cpu() {
         _ => panic!("Unsupported GIC version"),
     }
     debug!("GIC initialized for current CPU");
-
-    let cpu_id = current_cpu();
-    let is_irq_enabled = SCTLR_EL2.is_set(SCTLR_EL2::I);
-    info!(
-        "CPU {cpu_id} initialized with IRQ enabled: {}",
-        is_irq_enabled
-    );
 }
 
 fn get_gicd() -> Device<Intc> {
