@@ -2,7 +2,7 @@ use core::sync::atomic::AtomicI32;
 
 use aarch64_cpu::registers::*;
 use axplat::irq::{HandlerTable, IrqHandler, IrqIf};
-use log::{debug, info, trace, warn};
+use log::*;
 use rdrive::{Device, driver::intc::*};
 use spin::Mutex;
 
