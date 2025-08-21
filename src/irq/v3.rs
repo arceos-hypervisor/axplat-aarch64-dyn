@@ -5,10 +5,11 @@ use lazyinit::LazyInit;
 use log::*;
 use spin::Mutex;
 
-use crate::irq;
+use crate::irq::{self, current_cpu};
 
 use super::IRQ_HANDLER_TABLE;
 
+#[percpu::def_percpu]
 pub static CPU_IF: LazyInit<Mutex<CpuInterface>> = LazyInit::new();
 pub static TRAP: LazyInit<TrapOp> = LazyInit::new();
 
@@ -18,18 +19,21 @@ fn use_gicd(f: impl FnOnce(&mut Gic)) {
 }
 
 pub fn init_current_cpu() {
-    let mut cpu = CPU_IF.lock();
-    cpu.init_current_cpu().unwrap();
-    #[cfg(feature = "hv")]
-    cpu.set_eoi_mode(true);
-    #[cfg(not(feature = "hv"))]
-    cpu.set_eoi_mode(false);
+    CPU_IF.with_current(|c| {
+        let mut cpu = c.lock();
+        cpu.init_current_cpu().unwrap();
+        #[cfg(feature = "hv")]
+        cpu.set_eoi_mode(true);
+        #[cfg(not(feature = "hv"))]
+        cpu.set_eoi_mode(false);
+    });
 }
 
 pub fn handle(_unused: usize) {
     let ack = TRAP.ack1();
     let irq_num = ack.to_u32();
-    // info!("IRQ {}", irq_num);
+    let cpu_id = current_cpu();
+    trace!("[{cpu_id}] IRQ {}", irq_num);
     if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
         warn!("Unhandled IRQ {irq_num}");
     }
@@ -41,7 +45,6 @@ pub fn handle(_unused: usize) {
 }
 
 pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool) {
-    let c = CPU_IF.lock();
     debug!(
         "IRQ({:#x}) set enable: {}, {}",
         irq_raw,
@@ -53,11 +56,14 @@ pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool
     );
     let id = unsafe { IntId::raw(irq_raw as _) };
     if id.is_private() {
-        c.set_irq_enable(id, enabled);
+        CPU_IF.with_current(|c| {
+            let c = c.lock();
+            c.set_irq_enable(id, enabled);
 
-        if let Some(t) = trigger {
-            c.set_cfg(id, t);
-        }
+            if let Some(t) = trigger {
+                c.set_cfg(id, t);
+            }
+        });
     } else {
         use_gicd(|gic| {
             gic.set_irq_enable(id, enabled);

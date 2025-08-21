@@ -2,7 +2,7 @@ use core::sync::atomic::AtomicI32;
 
 use aarch64_cpu::registers::*;
 use axplat::irq::{HandlerTable, IrqHandler, IrqIf};
-use log::{debug, trace, warn};
+use log::{debug, info, trace, warn};
 use rdrive::{Device, driver::intc::*};
 use spin::Mutex;
 
@@ -81,14 +81,19 @@ pub(crate) fn init_current_cpu() {
         if let Some(v) = intc.typed_mut::<v2::Gic>() {
             let cpu = v.cpu_interface();
             v2::TRAP.call_once(|| cpu.trap_operations());
-            v2::CPU_IF.call_once(|| Mutex::new(cpu));
+            v2::CPU_IF.with_current(|c| {
+                c.call_once(|| Mutex::new(cpu));
+            });
+
             VERSION.store(2, core::sync::atomic::Ordering::SeqCst);
         }
 
         if let Some(v) = intc.typed_mut::<v3::Gic>() {
             let cpu = v.cpu_interface();
             v3::TRAP.call_once(|| cpu.trap_operations());
-            v3::CPU_IF.call_once(|| Mutex::new(cpu));
+            v3::CPU_IF.with_current(|c| {
+                c.call_once(|| Mutex::new(cpu));
+            });
             VERSION.store(3, core::sync::atomic::Ordering::SeqCst);
         }
     }
@@ -98,6 +103,13 @@ pub(crate) fn init_current_cpu() {
         _ => panic!("Unsupported GIC version"),
     }
     debug!("GIC initialized for current CPU");
+
+    let cpu_id = current_cpu();
+    let is_irq_enabled = SCTLR_EL2.is_set(SCTLR_EL2::I);
+    info!(
+        "CPU {cpu_id} initialized with IRQ enabled: {}",
+        is_irq_enabled
+    );
 }
 
 fn get_gicd() -> Device<Intc> {
@@ -109,6 +121,10 @@ fn current_cpu() -> usize {
 }
 
 pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool) {
+    trace!(
+        "set_enable: irq_raw={:#x}, trigger={:?}, enabled={}",
+        irq_raw, trigger, enabled
+    );
     let t = trigger.map(|t| t.into());
     match gic_version() {
         2 => v2::set_enable(irq_raw, t, enabled),
