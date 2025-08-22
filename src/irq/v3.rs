@@ -24,8 +24,6 @@ pub fn init_current_cpu() {
         cpu.init_current_cpu().unwrap();
         #[cfg(feature = "hv")]
         cpu.set_eoi_mode(true);
-        #[cfg(not(feature = "hv"))]
-        cpu.set_eoi_mode(false);
     });
 }
 
@@ -33,7 +31,7 @@ pub fn handle(_unused: usize) {
     let ack = TRAP.ack1();
     let irq_num = ack.to_u32();
     let cpu_id = current_cpu();
-    trace!("[{cpu_id}] IRQ {}", irq_num);
+    info!("[{cpu_id}] IRQ {}", irq_num);
     if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
         warn!("Unhandled IRQ {irq_num}");
     }
