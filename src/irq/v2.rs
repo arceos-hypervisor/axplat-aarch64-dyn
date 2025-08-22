@@ -25,8 +25,6 @@ pub fn init_current_cpu() {
         cpu.init_current_cpu();
         #[cfg(feature = "hv")]
         cpu.set_eoi_mode_ns(true);
-        #[cfg(not(feature = "hv"))]
-        cpu.set_eoi_mode_ns(false);
     })
 }
 

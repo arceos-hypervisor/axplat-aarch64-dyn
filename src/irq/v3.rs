@@ -5,7 +5,7 @@ use lazyinit::LazyInit;
 use log::*;
 use spin::Mutex;
 
-use crate::irq::{self, current_cpu};
+use crate::irq;
 
 use super::IRQ_HANDLER_TABLE;
 
