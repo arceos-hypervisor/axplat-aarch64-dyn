@@ -67,11 +67,16 @@ impl ConsoleIf for ConsoleIfImpl {
         read_len
     }
 }
+
 fn getchar() -> Option<u8> {
     let mut g = RX.lock();
     if let Some(rx) = g.as_mut() {
-        any_uart::block!(rx.read()).ok()
+		match rx.read() {
+			Ok(byte) => Some(byte),
+			Err(_) => None,
+		}
     } else {
         None
     }
 }
+
