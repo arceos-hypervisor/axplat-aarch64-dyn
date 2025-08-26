@@ -174,7 +174,8 @@ dependencies = [
 [[package]]
 name = "axcpu"
 version = "0.2.2"
-source = "git+https://github.com/arceos-hypervisor/axcpu?branch=vmm#833b96e8f2e5d7c83de85578222dc1b54a783487"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e09bc1235e3da45e942b50f47812f8397ad84cb490264bf914c65ac44e6f8b1d"
 dependencies = [
  "aarch64-cpu",
  "cfg-if",
@@ -185,7 +186,6 @@ dependencies = [
  "memory_addr",
  "page_table_entry",
  "page_table_multiarch",
- "paste",
  "percpu",
  "riscv",
  "static_assertions",

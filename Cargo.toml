@@ -15,7 +15,7 @@ aarch64-cpu-ext = "0.1"
 any-uart = "0.2.11"
 arm-gic-driver = {version = "0.15.3", features = ["rdif"]}
 axconfig-macros = "0.2"
-axcpu = {git = "https://github.com/arceos-hypervisor/axcpu", branch = "vmm"}
+axcpu = "0.2"
 axplat = "0.1"
 fdt-parser = "0.4"
 heapless = "0.8"
