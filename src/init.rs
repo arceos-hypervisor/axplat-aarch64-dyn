@@ -1,5 +1,6 @@
 use aarch64_cpu_ext::cache::{CacheOp, dcache_all};
 use axplat::init::InitIf;
+use log::debug;
 
 use crate::{console, driver};
 
@@ -78,6 +79,7 @@ impl InitIf for InitIfImpl {
             fn _percpu_start();
         }
         crate::time::enable();
+        debug!("drivers setup...");
         driver::setup();
         #[cfg(feature = "irq")]
         {

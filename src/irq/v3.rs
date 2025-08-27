@@ -5,7 +5,7 @@ use lazyinit::LazyInit;
 use log::*;
 use spin::Mutex;
 
-use crate::irq;
+use crate::{irq, smp::cpu_idx_to_id};
 
 use super::IRQ_HANDLER_TABLE;
 
@@ -72,4 +72,29 @@ pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool
         });
     }
     debug!("IRQ({irq_raw:#x}) set enable done");
+}
+
+pub fn send_ipi(id: usize, target: axplat::irq::IpiTarget) {
+    arm_gic_driver::v3::send_sgi(
+        IntId::sgi(id as _),
+        match target {
+            axplat::irq::IpiTarget::Current { cpu_id: _ } => {
+                SGITarget::List(TargetList::new([Affinity::current()]))
+            }
+            axplat::irq::IpiTarget::Other { cpu_id } => {
+                let hw_id = cpu_idx_to_id(cpu_id);
+                SGITarget::List(TargetList::new([Affinity::from_mpidr(hw_id as _)]))
+            }
+            axplat::irq::IpiTarget::AllExceptCurrent { cpu_id, cpu_num } => {
+                let mut list = alloc::vec::Vec::new();
+                for i in 0..cpu_num {
+                    if i != cpu_id {
+                        let hw_id = cpu_idx_to_id(i);
+                        list.push(Affinity::from_mpidr(hw_id as _));
+                    }
+                }
+                SGITarget::List(TargetList::new(&list))
+            }
+        },
+    );
 }

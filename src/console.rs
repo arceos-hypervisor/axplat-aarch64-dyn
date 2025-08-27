@@ -71,12 +71,8 @@ impl ConsoleIf for ConsoleIfImpl {
 fn getchar() -> Option<u8> {
     let mut g = RX.lock();
     if let Some(rx) = g.as_mut() {
-		match rx.read() {
-			Ok(byte) => Some(byte),
-			Err(_) => None,
-		}
+        rx.read().ok()
     } else {
         None
     }
 }
-

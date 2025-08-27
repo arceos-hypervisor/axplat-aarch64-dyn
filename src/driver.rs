@@ -1,10 +1,15 @@
-use somehal::boot_info;
+use core::ptr::NonNull;
+
 use rdrive::{Platform, init, probe_pre_kernel};
+use somehal::{boot_info, mem::phys_to_virt};
 
 pub fn setup() {
-    let fdt = boot_info().fdt.expect("FDT must be present");
-
-    init(Platform::Fdt { addr: fdt }).unwrap();
+    let paddr = boot_info().fdt.expect("FDT must be present");
+    let fdt = phys_to_virt(paddr.as_ptr() as usize);
+    init(Platform::Fdt {
+        addr: unsafe { NonNull::new_unchecked(fdt) },
+    })
+    .unwrap();
 
     probe_pre_kernel().unwrap();
 }

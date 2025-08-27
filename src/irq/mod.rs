@@ -61,6 +61,14 @@ impl IrqIf for IrqIfImpl {
             _ => panic!("Unsupported GIC version"),
         }
     }
+
+    fn send_ipi(id: usize, target: axplat::irq::IpiTarget) {
+        match gic_version() {
+            2 => v2::send_ipi(id, target),
+            3 => v3::send_ipi(id, target),
+            _ => panic!("Unsupported GIC version"),
+        }
+    }
 }
 
 pub(crate) fn init() {

@@ -77,3 +77,21 @@ pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool
     }
     debug!("IRQ({irq_raw:#x}) set enable done");
 }
+
+pub fn send_ipi(id: usize, target: axplat::irq::IpiTarget) {
+    use_gicd(|gic| {
+        gic.send_sgi(
+            IntId::sgi(id as _),
+            match target {
+                axplat::irq::IpiTarget::Current { cpu_id: _ } => SGITarget::Current,
+                axplat::irq::IpiTarget::Other { cpu_id } => {
+                    SGITarget::TargetList(TargetList::new([cpu_id].into_iter()))
+                }
+                axplat::irq::IpiTarget::AllExceptCurrent {
+                    cpu_id: _,
+                    cpu_num: _,
+                } => SGITarget::AllOther,
+            },
+        );
+    });
+}
