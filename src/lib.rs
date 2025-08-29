@@ -17,7 +17,7 @@ mod init;
 #[cfg(feature = "irq")]
 mod irq;
 mod mem;
-// mod paging;
+mod fdt;
 mod power;
 #[cfg(feature = "smp")]
 mod smp;

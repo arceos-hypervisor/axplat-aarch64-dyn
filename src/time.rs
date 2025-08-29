@@ -89,7 +89,7 @@ pub fn enable_irqs() {
         "axconfig.toml `timer-irq` must match the IRQ number used in the driver"
     );
 
-    crate::irq::set_enable(irq_raw, Some(TIMER_IRQ_CONFIG.trigger), true);
+    crate::irq::set_enable(irq_raw, true);
 }
 
 module_driver!(

@@ -6,6 +6,8 @@ use log::*;
 use rdrive::{Device, driver::intc::*};
 use spin::Mutex;
 
+use crate::fdt::find_trigger;
+
 mod v2;
 mod v3;
 
@@ -22,7 +24,7 @@ struct IrqIfImpl;
 impl IrqIf for IrqIfImpl {
     /// Enables or disables the given IRQ.
     fn set_enable(irq_raw: usize, enabled: bool) {
-        set_enable(irq_raw, None, enabled);
+        set_enable(irq_raw, enabled);
     }
 
     /// Registers an IRQ handler for the given IRQ.
@@ -121,12 +123,12 @@ fn current_cpu() -> usize {
     MPIDR_EL1.get() as usize & 0xffffff
 }
 
-pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool) {
+pub(crate) fn set_enable(irq_raw: usize, enabled: bool) {
+    let t = find_trigger(irq_raw);
     trace!(
         "set_enable: irq_raw={:#x}, trigger={:?}, enabled={}",
-        irq_raw, trigger, enabled
+        irq_raw, t, enabled
     );
-    let t = trigger.map(|t| t.into());
     match gic_version() {
         2 => v2::set_enable(irq_raw, t, enabled),
         3 => v3::set_enable(irq_raw, t, enabled),
