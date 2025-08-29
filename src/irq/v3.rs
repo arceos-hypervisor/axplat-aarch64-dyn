@@ -5,7 +5,7 @@ use lazyinit::LazyInit;
 use log::*;
 use spin::Mutex;
 
-use crate::{irq, smp::cpu_idx_to_id};
+use crate::irq;
 
 use super::IRQ_HANDLER_TABLE;
 
@@ -82,18 +82,32 @@ pub fn send_ipi(id: usize, target: axplat::irq::IpiTarget) {
                 SGITarget::List(TargetList::new([Affinity::current()]))
             }
             axplat::irq::IpiTarget::Other { cpu_id } => {
-                let hw_id = cpu_idx_to_id(cpu_id);
-                SGITarget::List(TargetList::new([Affinity::from_mpidr(hw_id as _)]))
+                #[cfg(feature = "smp")]
+                {
+                    let hw_id = crate::smp::cpu_idx_to_id(cpu_id);
+                    SGITarget::List(TargetList::new([Affinity::from_mpidr(hw_id as _)]))
+                }
+                #[cfg(not(feature = "smp"))]
+                {
+                    return;
+                }
             }
             axplat::irq::IpiTarget::AllExceptCurrent { cpu_id, cpu_num } => {
-                let mut list = alloc::vec::Vec::new();
-                for i in 0..cpu_num {
-                    if i != cpu_id {
-                        let hw_id = cpu_idx_to_id(i);
-                        list.push(Affinity::from_mpidr(hw_id as _));
+                #[cfg(feature = "smp")]
+                {
+                    let mut list = alloc::vec::Vec::new();
+                    for i in 0..cpu_num {
+                        if i != cpu_id {
+                            let hw_id = crate::smp::cpu_idx_to_id(i);
+                            list.push(Affinity::from_mpidr(hw_id as _));
+                        }
                     }
+                    SGITarget::List(TargetList::new(&list))
                 }
-                SGITarget::List(TargetList::new(&list))
+                #[cfg(not(feature = "smp"))]
+                {
+                    return;
+                }
             }
         },
     );
