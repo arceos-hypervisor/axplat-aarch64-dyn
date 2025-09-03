@@ -30,6 +30,10 @@ pub fn init_current_cpu() {
 pub fn handle(_unused: usize) {
     let ack = TRAP.ack1();
     let irq_num = ack.to_u32();
+    if ack.is_special() {
+        return;
+    }
+
     // let cpu_id = current_cpu();
     // info!("[{cpu_id}] IRQ {}", irq_num);
     if !IRQ_HANDLER_TABLE.handle(irq_num as _) {

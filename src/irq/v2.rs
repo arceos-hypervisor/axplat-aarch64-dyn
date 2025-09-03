@@ -30,11 +30,15 @@ pub fn init_current_cpu() {
 
 pub fn handle(_unused: usize) {
     let ack = TRAP.ack();
-    let irq_num = match ack {
+    let intid = match ack {
         Ack::SGI { intid, cpu_id: _ } => intid,
         Ack::Other(intid) => intid,
+    };
+    if intid.is_special() {
+        return;
     }
-    .to_u32();
+
+    let irq_num = intid.to_u32();
     // info!("IRQ {}", irq_num);
     if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
         warn!("Unhandled IRQ {irq_num}");
