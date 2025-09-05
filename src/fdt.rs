@@ -13,9 +13,13 @@ pub fn find_trigger(irq_raw: usize) -> Option<Trigger> {
             for irq in irqs {
                 let one = irq.collect::<Vec<_>>();
 
-                let c = fdt_parse_irq_config(&one).unwrap();
+                if one.is_empty() {
+                    continue;
+                }
 
-                if c.id == id {
+                if let Ok(c) = fdt_parse_irq_config(&one)
+                    && c.id == id
+                {
                     trigger = Some(c.trigger);
                     break;
                 }
