@@ -1,4 +1,5 @@
 use alloc::vec::Vec;
+
 use fdt_parser::Status;
 use log::{debug, info};
 use somehal::boot_info;

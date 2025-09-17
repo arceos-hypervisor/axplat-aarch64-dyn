@@ -1,4 +1,5 @@
 use alloc::vec::Vec;
+
 use arm_gic_driver::{IntId, fdt_parse_irq_config, v3::Trigger};
 
 use crate::fdt;

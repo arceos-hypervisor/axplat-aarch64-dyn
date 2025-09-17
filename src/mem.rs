@@ -113,6 +113,7 @@ impl MemIf for MemIfImpl {
             VirtAddr::from_usize(p.as_usize() + KLINER_OFFSET)
         }
     }
+
     fn virt_to_phys(p: VirtAddr) -> PhysAddr {
         if (KIMAGE_VADDR..KIMAGE_VADDR + KIMAGE_VSIZE).contains(&p.as_usize()) {
             PhysAddr::from_usize(p.as_usize() - va_offset())
