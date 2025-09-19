@@ -1,5 +1,6 @@
 #![cfg(target_arch = "aarch64")]
 #![no_std]
+#![feature(used_with_arg)]
 
 #[macro_use]
 extern crate axplat;
