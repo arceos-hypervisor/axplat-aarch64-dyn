@@ -66,7 +66,7 @@ pub fn setup() {
     MMIO.call_once(|| {
         let mut mmio_list = Vec::new();
         if let Some(debug) = &boot_info().debug_console {
-            let start = (debug.base as usize).align_down_4k();
+            let start = debug.base_phys.align_down_4k();
             let _ = mmio_list.push((start, 0x1000));
         }
 
