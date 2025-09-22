@@ -70,7 +70,7 @@ impl InitIf for InitIfImpl {
     /// * Timer interrupts are enabled (if applicable).
     /// * Other platform devices are initialized.
     fn init_later(_cpu_id: usize, _arg: usize) {
-        somehal::println!("init_later start");
+        somehal::mem::flush_tlb(None);
         #[cfg(feature = "smp")]
         crate::smp::init();
 
