@@ -37,7 +37,7 @@ fn sp_reset(args: &BootInfo) -> ! {
 #[cfg(feature = "smp")]
 #[somehal::secondary_entry]
 fn secondary(cpu_id: usize) {
-    dcache_all(CacheOp::CleanAndInvalidate);
+    dcache_all(CacheOp::Invalidate);
     let cpu_idx = crate::smp::cpu_id_to_idx(cpu_id);
     axplat::call_secondary_main(cpu_idx)
 }

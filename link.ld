@@ -31,10 +31,8 @@ SECTIONS
         __init_array_end = .;
     }
 
-    . = ALIGN(4K);
-    _erodata = .;
-
     .data : ALIGN(4K) {
+        _erodata = .;
         _sdata = .;
         *(.data.boot_page_table)
         . = ALIGN(4K);

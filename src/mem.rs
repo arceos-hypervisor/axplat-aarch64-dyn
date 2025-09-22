@@ -1,5 +1,6 @@
 use core::ops::Range;
 
+use aarch64_cpu_ext::cache::{CacheOp, dcache_range};
 use axplat::mem::{MemIf, PhysAddr, RawRange, VirtAddr};
 use heapless::Vec;
 use log::trace;
@@ -31,6 +32,7 @@ pub fn setup() {
             .filter(|one| matches!(one.kind, MemoryRegionKind::Ram))
             .map(|one| (one.start, one.end - one.start))
         {
+            dcache_range(CacheOp::Invalidate, region.0, region.1);
             let _ = ram_list.push(region);
         }
         ram_list
@@ -60,6 +62,7 @@ pub fn setup() {
         {
             let _ = rsv_list.push(region);
         }
+
         rsv_list
     });
 

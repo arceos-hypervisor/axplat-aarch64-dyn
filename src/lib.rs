@@ -14,11 +14,12 @@ use fdt_parser::Fdt;
 mod boot;
 mod console;
 mod driver;
+mod fdt;
 mod init;
 #[cfg(feature = "irq")]
 mod irq;
 mod mem;
-mod fdt;
+mod percpu;
 mod power;
 #[cfg(feature = "smp")]
 mod smp;

@@ -2,6 +2,7 @@ use core::sync::atomic::AtomicI32;
 
 use aarch64_cpu::registers::*;
 use axplat::irq::{HandlerTable, IrqHandler, IrqIf};
+use lazyinit::LazyInit;
 use log::*;
 use rdrive::{Device, driver::intc::*};
 use spin::Mutex;
@@ -79,6 +80,9 @@ pub(crate) fn init() {
     let mut gic = intc.lock().unwrap();
     gic.open().unwrap();
     debug!("GICD initialized");
+    unsafe {
+        v3::CPU_IF.cpu0_init(LazyInit::new);
+    }
 }
 
 fn gic_version() -> i32 {
@@ -86,6 +90,7 @@ fn gic_version() -> i32 {
 }
 
 pub(crate) fn init_current_cpu() {
+    debug!("[{:#x}] Gic init", current_cpu());
     {
         let mut intc = get_gicd().lock().unwrap();
         if let Some(v) = intc.typed_mut::<v2::Gic>() {
@@ -97,13 +102,12 @@ pub(crate) fn init_current_cpu() {
 
             VERSION.store(2, core::sync::atomic::Ordering::SeqCst);
         }
-
         if let Some(v) = intc.typed_mut::<v3::Gic>() {
             let cpu = v.cpu_interface();
             v3::TRAP.call_once(|| cpu.trap_operations());
-            v3::CPU_IF.with_current(|c| {
-                c.call_once(|| Mutex::new(cpu));
-            });
+
+            v3::CPU_IF.call_once(|| Mutex::new(cpu));
+
             VERSION.store(3, core::sync::atomic::Ordering::SeqCst);
         }
     }

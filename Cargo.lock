@@ -1593,9 +1593,9 @@ dependencies = [
 
 [[package]]
 name = "pie-boot-loader-aarch64"
-version = "0.3.0"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "07ed92f520e82ae76047cf8af83aca112375a132705069d0e89ea66e631d8bd7"
+checksum = "8c4b60675a82ad42624f8150a0088660a40f36ffc3107827a7520e24ca7eee74"
 dependencies = [
  "aarch64-cpu",
  "aarch64-cpu-ext",
@@ -2274,9 +2274,9 @@ dependencies = [
 
 [[package]]
 name = "somehal"
-version = "0.4.0"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "df679b7b8ddd53e4cb30502bd6a18372376e13a3cc8ed1713c158c6aa72ec57a"
+checksum = "6475d6e1581129d2dfa1976cc58bfdc27c969cedf3dbf98317944e776c37763c"
 dependencies = [
  "aarch64-cpu",
  "aarch64-cpu-ext",

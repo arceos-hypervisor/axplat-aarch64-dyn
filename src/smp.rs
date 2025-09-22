@@ -1,3 +1,4 @@
+use aarch64_cpu::registers::*;
 use alloc::vec::Vec;
 use fdt_parser::Status;
 use log::{debug, info};
@@ -10,6 +11,9 @@ static CPU_ID_LIST: Once<Vec<usize>> = Once::new();
 static mut PHYS_VIRT_OFFSET: usize = 0;
 static mut BOOT_PT: usize = 0;
 
+pub fn current_cpu() -> usize {
+    MPIDR_EL1.get() as usize & 0xffffff
+}
 pub fn init() {
     CPU_ID_LIST.call_once(|| {
         let mut ls = Vec::new();
