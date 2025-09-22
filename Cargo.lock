@@ -211,7 +211,7 @@ dependencies = [
 
 [[package]]
 name = "axplat-aarch64-dyn"
-version = "0.1.6"
+version = "0.1.7"
 dependencies = [
  "aarch64-cpu",
  "aarch64-cpu-ext",
