@@ -12,11 +12,8 @@ pub(crate) fn setup_early() -> Option<()> {
     let fdt = Fdt::from_ptr(ptr).ok()?;
     let choson = fdt.chosen()?;
     let node = choson.debugcon()?;
-    fn phys_to_virt(p: usize) -> *mut u8 {
-        axplat::mem::phys_to_virt(p.into()).as_mut_ptr()
-    }
 
-    let mut uart = any_uart::Uart::new_by_fdt_node(&node, phys_to_virt)?;
+    let mut uart = any_uart::Uart::new_by_fdt_node(&node, somehal::mem::phys_to_virt)?;
     *TX.lock() = uart.tx.take();
     *RX.lock() = uart.rx.take();
 

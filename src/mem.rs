@@ -60,6 +60,7 @@ pub fn setup() {
         {
             let _ = rsv_list.push(region);
         }
+
         rsv_list
     });
 

@@ -60,10 +60,10 @@ SECTIONS
     debug_str_offsets : {
         . += SIZEOF(.debug_str_offsets);
     }
-    . = ALIGN(4K);
-    _erodata = .;
+ 
 
     .data : ALIGN(4K) {
+        _erodata = .;
         _sdata = .;
         *(.data.boot_page_table)
         . = ALIGN(4K);

@@ -1,4 +1,3 @@
-use aarch64_cpu_ext::cache::{CacheOp, dcache_all};
 use axplat::init::InitIf;
 use log::debug;
 
@@ -71,7 +70,7 @@ impl InitIf for InitIfImpl {
     /// * Timer interrupts are enabled (if applicable).
     /// * Other platform devices are initialized.
     fn init_later(_cpu_id: usize, _arg: usize) {
-        dcache_all(CacheOp::CleanAndInvalidate);
+        somehal::mem::flush_tlb(None);
         #[cfg(feature = "smp")]
         crate::smp::init();
 
@@ -94,7 +93,7 @@ impl InitIf for InitIfImpl {
     /// See [`init_later`] for details.
     #[cfg(feature = "smp")]
     fn init_later_secondary(_cpu_id: usize) {
-        dcache_all(CacheOp::CleanAndInvalidate);
+        somehal::mem::flush_tlb(None);
 
         crate::time::enable();
         #[cfg(feature = "irq")]

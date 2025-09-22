@@ -12,9 +12,17 @@ impl PowerIf for PowerImpl {
     /// CPU cores on the platform).
     #[cfg(feature = "smp")]
     fn cpu_boot(cpu_idx: usize, stack_top_paddr: usize) {
+        use axcpu::asm::{disable_irqs, irqs_enabled};
+
+        let irq = irqs_enabled();
+        disable_irqs();
         let cpu_id = crate::smp::cpu_idx_to_id(cpu_idx);
         info!("booting CPU{cpu_idx} id {cpu_id:#x} with stack top {stack_top_paddr:#x}",);
+
         somehal::power::cpu_on(cpu_id as _, stack_top_paddr as _).unwrap();
+        if irq {
+            axcpu::asm::enable_irqs();
+        }
     }
 
     /// Shutdown the whole system.
