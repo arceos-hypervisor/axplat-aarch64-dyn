@@ -211,7 +211,7 @@ dependencies = [
 
 [[package]]
 name = "axplat-aarch64-dyn"
-version = "0.1.7"
+version = "0.2.0"
 dependencies = [
  "aarch64-cpu",
  "aarch64-cpu-ext",
@@ -228,6 +228,7 @@ dependencies = [
  "page_table_entry",
  "paste",
  "percpu",
+ "rdif-intc",
  "rdrive",
  "serde",
  "somehal",
@@ -1737,33 +1738,15 @@ dependencies = [
 
 [[package]]
 name = "rdif-base"
-version = "0.6.0"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6953f438bbbdf58e55513c31e70fa0f85daba2927e8a59130a04608141bb552"
+checksum = "4f8c32d8cbc18633a412130719b07d31135215d1715ac48fc3888ca835a811ba"
 dependencies = [
  "as-any",
  "async-trait",
+ "paste",
  "rdif-def",
  "thiserror 2.0.16",
-]
-
-[[package]]
-name = "rdif-block"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c7b8e19dc3cb6cd7241085a9560a91d4346edbc525bcbfc3c86e5eeb11559c19"
-dependencies = [
- "cfg-if",
- "rdif-base",
-]
-
-[[package]]
-name = "rdif-clk"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ee94bb098e921346fffa3bb8d18e80fbb903c8ad2cb0a103ee9a65ae1a7d77fa"
-dependencies = [
- "rdif-base",
 ]
 
 [[package]]
@@ -1777,9 +1760,9 @@ dependencies = [
 
 [[package]]
 name = "rdif-intc"
-version = "0.12.0"
+version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d29b44e4bbb180ed0031e22a54d802f77226faf7064e52fcc8cf25c2376cb2ff"
+checksum = "170ec813e6cf4d1e5fa53fa8fed0fadc7aaab96683d4f1d44c602a6109931eb4"
 dependencies = [
  "cfg-if",
  "rdif-base",
@@ -1787,52 +1770,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "rdif-power"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "37eb02828548e3d1bb13d2a5d892219dfa295c3c0c00a1a647a68f947e5d070a"
-dependencies = [
- "rdif-base",
-]
-
-[[package]]
-name = "rdif-serial"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2a3381d491f588cfb20dfa661dc374411a2cb91c751b2e18516e0d2edca6a58e"
-dependencies = [
- "futures",
- "rdif-base",
- "spin_on",
- "thiserror 2.0.16",
-]
-
-[[package]]
-name = "rdif-systick"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2cdd145eab68c38f23dfcc8b3b1ed20c48bbb1a4278dd9c7bf64e9219cc61158"
-dependencies = [
- "rdif-base",
-]
-
-[[package]]
 name = "rdrive"
-version = "0.16.1"
+version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "77fc183d7ddcfdac66c688ced56415213970f36694fe821ea45339780080ba82"
+checksum = "e997dc02215be04df3bb680c7cc45660c562b9f0b2d9689058f28e2bf0665693"
 dependencies = [
  "enum_dispatch",
  "fdt-parser",
  "log",
  "paste",
  "rdif-base",
- "rdif-block",
- "rdif-clk",
- "rdif-intc",
- "rdif-power",
- "rdif-serial",
- "rdif-systick",
  "rdrive-macros",
  "spin 0.10.0",
  "thiserror 2.0.16",
@@ -2274,9 +2221,9 @@ dependencies = [
 
 [[package]]
 name = "somehal"
-version = "0.4.3"
+version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f916f4e5297405d4d97788f586927dba290f63e026d6e42486a40d2670f2545c"
+checksum = "5a9b180e1abae1127bd99ecee566c3906d8c0f854cb1c442b945afe911e6eb71"
 dependencies = [
  "aarch64-cpu",
  "aarch64-cpu-ext",
@@ -2317,15 +2264,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d5fe4ccb98d9c292d56fec89a5e07da7fc4cf0dc11e156b41793132775d3e591"
 dependencies = [
  "lock_api",
-]
-
-[[package]]
-name = "spin_on"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "076e103ed41b9864aa838287efe5f4e3a7a0362dd00671ae62a212e5e4612da2"
-dependencies = [
- "pin-utils",
 ]
 
 [[package]]
@@ -2444,9 +2382,9 @@ dependencies = [
 
 [[package]]
 name = "tempfile"
-version = "3.22.0"
+version = "3.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "84fa4d11fadde498443cca10fd3ac23c951f0dc59e080e9f4b93d4df4e4eea53"
+checksum = "2d31c77bdf42a745371d260a26ca7163f1e0924b64afa0b688e61b5a9fa02f16"
 dependencies = [
  "fastrand",
  "getrandom 0.3.3",
