@@ -1,8 +1,7 @@
 use aarch64_cpu::registers::*;
 use axplat::time::TimeIf;
 use lazyinit::LazyInit;
-#[cfg(not(feature = "irq"))]
-use rdrive::driver::intc::Trigger;
+
 use rdrive::{IrqConfig, PlatformDevice, module_driver, probe::OnProbeError, register::FdtInfo};
 
 static TIMER_IRQ_CONFIG: LazyInit<IrqConfig> = LazyInit::new();
@@ -108,7 +107,7 @@ fn probe(_fdt: FdtInfo<'_>, _dev: PlatformDevice) -> Result<(), OnProbeError> {
     #[cfg(not(feature = "irq"))]
     let irq = IrqConfig {
         irq: 0.into(),
-        trigger: Trigger::EdgeBoth,
+        trigger: rdif_intc::Trigger::EdgeBoth,
         is_private: true,
     };
     #[cfg(feature = "irq")]
@@ -117,7 +116,7 @@ fn probe(_fdt: FdtInfo<'_>, _dev: PlatformDevice) -> Result<(), OnProbeError> {
         let irq_idx = 1;
         #[cfg(feature = "hv")]
         let irq_idx = 3;
-        _dev.descriptor.irqs[irq_idx].clone()
+        crate::irq::parse_fdt_irqs(&_fdt.interrupts()[irq_idx])
     };
     TIMER_IRQ_CONFIG.call_once(|| irq);
     Ok(())

@@ -3,7 +3,8 @@ use core::sync::atomic::AtomicI32;
 use aarch64_cpu::registers::*;
 use axplat::irq::{HandlerTable, IrqHandler, IrqIf};
 use log::*;
-use rdrive::{Device, driver::intc::*};
+use rdif_intc::*;
+use rdrive::Device;
 use spin::Mutex;
 
 use crate::fdt::find_trigger;
@@ -133,5 +134,17 @@ pub(crate) fn set_enable(irq_raw: usize, enabled: bool) {
         2 => v2::set_enable(irq_raw, t, enabled),
         3 => v3::set_enable(irq_raw, t, enabled),
         _ => panic!("Unsupported GIC version"),
+    }
+}
+
+pub fn parse_fdt_irqs(fdt_irqs: &[u32]) -> IrqConfig {
+    let raw = arm_gic_driver::fdt_parse_irq_config(fdt_irqs).unwrap();
+    IrqConfig {
+        irq: (raw.id.to_u32() as usize).into(),
+        trigger: match raw.trigger {
+            arm_gic_driver::v3::Trigger::Edge => Trigger::EdgeRising,
+            arm_gic_driver::v3::Trigger::Level => Trigger::LevelHigh,
+        },
+        is_private: raw.id.is_private(),
     }
 }
