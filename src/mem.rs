@@ -56,7 +56,12 @@ pub fn setup() {
                     MemoryRegionKind::Reserved | MemoryRegionKind::Bootloader
                 )
             })
-            .map(|one| (one.start, one.end.align_up_4k() - one.start))
+            .map(|one| {
+                (
+                    one.start.align_down_4k(),
+                    one.end.align_up_4k() - one.start.align_down_4k(),
+                )
+            })
         {
             let _ = rsv_list.push(region);
         }
