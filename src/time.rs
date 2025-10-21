@@ -1,7 +1,6 @@
 use aarch64_cpu::registers::*;
 use axplat::time::TimeIf;
 use lazyinit::LazyInit;
-
 use rdrive::{IrqConfig, PlatformDevice, module_driver, probe::OnProbeError, register::FdtInfo};
 
 static TIMER_IRQ_CONFIG: LazyInit<IrqConfig> = LazyInit::new();

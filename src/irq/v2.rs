@@ -39,6 +39,10 @@ pub fn handle(_unused: usize) {
     }
 
     let irq_num = intid.to_u32();
+
+    // if irq_num == 0x21 {
+    //     info!("1");
+    // }
     // info!("IRQ {}", irq_num);
     if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
         warn!("Unhandled IRQ {irq_num}");
@@ -72,11 +76,14 @@ pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool
         });
     } else {
         use_gicd(|gic| {
-            gic.set_irq_enable(id, enabled);
+            debug!("IRQ({irq_raw:#x}) set enable done, set target cpu");
             gic.set_target_cpu(id, TargetList::new([current_cpu()].into_iter()));
+            debug!("IRQ({irq_raw:#x}) set enable done, set cfg");
             if let Some(t) = trigger {
                 gic.set_cfg(id, t);
             }
+            debug!("set enable irq {irq_raw} on gicd");
+            gic.set_irq_enable(id, enabled);
         });
     }
     debug!("IRQ({irq_raw:#x}) set enable done");

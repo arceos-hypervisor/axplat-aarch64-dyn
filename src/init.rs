@@ -86,6 +86,7 @@ impl InitIf for InitIfImpl {
             crate::irq::init_current_cpu();
             crate::time::enable_irqs();
         }
+        crate::console::init();
     }
 
     /// Initializes the platform at the later stage for secondary cores.

@@ -1,6 +1,5 @@
 use core::arch::naked_asm;
 
-use aarch64_cpu_ext::cache::{CacheOp, dcache_all};
 use somehal::BootInfo;
 
 const BOOT_STACK_SIZE: usize = 0x40000; // 256KB
@@ -37,6 +36,7 @@ fn sp_reset(args: &BootInfo) -> ! {
 #[cfg(feature = "smp")]
 #[somehal::secondary_entry]
 fn secondary(cpu_id: usize) {
+    use aarch64_cpu_ext::cache::{CacheOp, dcache_all};
     dcache_all(CacheOp::Invalidate);
     let cpu_idx = crate::smp::cpu_id_to_idx(cpu_id);
     axplat::call_secondary_main(cpu_idx)
