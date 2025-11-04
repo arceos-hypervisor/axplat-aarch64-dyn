@@ -10,6 +10,11 @@ struct TimeIfImpl;
 
 #[impl_plat_interface]
 impl TimeIf for TimeIfImpl {
+    /// Returns the IRQ number for the timer interrupt.
+    fn irq_num() -> usize{
+        TIMER_IRQ_CONFIG.irq.into()
+    }
+
     /// Returns the current clock time in hardware ticks.
     fn current_ticks() -> u64 {
         CNTPCT_EL0.get()
@@ -51,6 +56,8 @@ impl TimeIf for TimeIfImpl {
             set_tval(0);
         }
     }
+
+
 }
 
 fn set_tval(tval: u64) {
@@ -79,14 +86,7 @@ pub fn enable() {
 /// It should be called on all CPUs, as the timer interrupt is a PPI (Private
 /// Peripheral Interrupt).
 pub fn enable_irqs() {
-    use crate::config::devices::TIMER_IRQ;
-
     let irq_raw: usize = TIMER_IRQ_CONFIG.irq.into();
-
-    assert_eq!(
-        irq_raw, TIMER_IRQ,
-        "axconfig.toml `timer-irq` must match the IRQ number used in the driver"
-    );
 
     crate::irq::set_enable(irq_raw, true);
 }

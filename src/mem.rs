@@ -121,6 +121,17 @@ impl MemIf for MemIfImpl {
             PhysAddr::from_usize(p.as_usize() - KLINER_OFFSET)
         }
     }
+
+    fn kernel_aspace() -> (VirtAddr, usize) {
+        #[cfg(feature = "hv")]
+        {
+            (VirtAddr::from_usize(0), 0xffff_ffff_f000)
+        }
+        #[cfg(not(feature = "hv"))]
+        {
+            (VirtAddr::from_usize(0xffff_8000_0000_0000), 0x0000_7fff_ffff_f000)
+        }
+    }
 }
 
 fn kimage_range_phys() -> Range<PhysAddr> {
