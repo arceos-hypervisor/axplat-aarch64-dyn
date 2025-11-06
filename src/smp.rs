@@ -26,22 +26,6 @@ pub fn init() {
 
     debug!("CPU ID list: {:#x?}", CPU_ID_LIST.wait());
 
-    if CPU_ID_LIST.wait().len() < CPU_NUM {
-        panic!(
-            "CPU count {} is less than expected `cpu_num` in `.axconfig.toml` with {}",
-            CPU_ID_LIST.wait().len(),
-            CPU_NUM
-        );
-    }
-
-    if CPU_ID_LIST.wait().len() > CPU_NUM {
-        info!(
-            "CPU count {} is more than expected `cpu_num` in `.axconfig.toml` with {}",
-            CPU_ID_LIST.wait().len(),
-            CPU_NUM
-        );
-    }
-
     unsafe {
         let offset = boot_info().kcode_offset();
         PHYS_VIRT_OFFSET = offset;
