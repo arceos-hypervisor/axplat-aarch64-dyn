@@ -56,7 +56,12 @@ pub fn setup() {
                     MemoryRegionKind::Reserved | MemoryRegionKind::Bootloader
                 )
             })
-            .map(|one| (one.start, one.end.align_up_4k() - one.start))
+            .map(|one| {
+                (
+                    one.start.align_down_4k(),
+                    one.end.align_up_4k() - one.start.align_down_4k(),
+                )
+            })
         {
             let _ = rsv_list.push(region);
         }
@@ -129,7 +134,10 @@ impl MemIf for MemIfImpl {
         }
         #[cfg(not(feature = "hv"))]
         {
-            (VirtAddr::from_usize(0xffff_8000_0000_0000), 0x0000_7fff_ffff_f000)
+            (
+                VirtAddr::from_usize(0xffff_8000_0000_0000),
+                0x0000_7fff_ffff_f000,
+            )
         }
     }
 }
