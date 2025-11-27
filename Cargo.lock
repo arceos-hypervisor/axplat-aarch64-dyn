@@ -196,8 +196,8 @@ dependencies = [
 
 [[package]]
 name = "axplat"
-version = "0.2.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+version = "0.3.0"
+source = "git+https://github.com/arceos-org/axplat_crates.git?tag=dev-v03#72b148262f4f58a3a6c64c23d0f377e6469b662a"
 dependencies = [
  "axplat-macros",
  "bitflags 2.9.4",
@@ -206,6 +206,7 @@ dependencies = [
  "handler_table",
  "kspin",
  "memory_addr",
+ "percpu",
 ]
 
 [[package]]
@@ -238,7 +239,7 @@ dependencies = [
 [[package]]
 name = "axplat-macros"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+source = "git+https://github.com/arceos-org/axplat_crates.git?tag=dev-v03#72b148262f4f58a3a6c64c23d0f377e6469b662a"
 dependencies = [
  "proc-macro2",
  "quote",

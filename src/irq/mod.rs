@@ -57,7 +57,7 @@ impl IrqIf for IrqIfImpl {
     /// It is called by the common interrupt handler. It should look up in the
     /// IRQ handler table and calls the corresponding handler. If necessary, it
     /// also acknowledges the interrupt controller after handling.
-    fn handle(irq_num: usize) {
+    fn handle(irq_num: usize) -> Option<usize> {
         match gic_version() {
             2 => v2::handle(irq_num),
             3 => v3::handle(irq_num),
