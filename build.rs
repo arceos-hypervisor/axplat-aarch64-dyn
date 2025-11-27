@@ -1,11 +1,9 @@
 use std::path::PathBuf;
 
-use serde::Deserialize;
-
 fn main() {
     // println!("cargo:rerun-if-env-changed=AX_CONFIG_PATH");
     // let config_path =
-        // std::env::var("AX_CONFIG_PATH").unwrap_or_else(|_| "axconfig.toml".to_string());
+    // std::env::var("AX_CONFIG_PATH").unwrap_or_else(|_| "axconfig.toml".to_string());
 
     // println!("cargo:rerun-if-changed={config_path}");
 

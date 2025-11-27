@@ -1,10 +1,10 @@
 use alloc::vec::Vec;
 use fdt_parser::Status;
-use log::{debug, info};
+use log::debug;
 use somehal::boot_info;
 use spin::Once;
 
-use crate::{config::plat::CPU_NUM, fdt};
+use crate::fdt;
 
 static CPU_ID_LIST: Once<Vec<usize>> = Once::new();
 static mut PHYS_VIRT_OFFSET: usize = 0;
