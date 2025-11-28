@@ -11,7 +11,7 @@ struct TimeIfImpl;
 #[impl_plat_interface]
 impl TimeIf for TimeIfImpl {
     /// Returns the IRQ number for the timer interrupt.
-    fn irq_num() -> usize{
+    fn irq_num() -> usize {
         TIMER_IRQ_CONFIG.irq.into()
     }
 
@@ -56,8 +56,6 @@ impl TimeIf for TimeIfImpl {
             set_tval(0);
         }
     }
-
-
 }
 
 fn set_tval(tval: u64) {

@@ -116,4 +116,3 @@ pub fn send_ipi(id: usize, target: axplat::irq::IpiTarget) {
         },
     );
 }
-
