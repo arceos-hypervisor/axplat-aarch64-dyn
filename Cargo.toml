@@ -15,8 +15,8 @@ aarch64-cpu-ext = "0.1"
 any-uart = "0.2.11"
 arm-gic-driver = {version = "0.15.3", features = ["rdif"]}
 axconfig-macros = "0.2"
-axcpu = "0.2"
-axplat = { git = "https://github.com/arceos-hypervisor/axplat_crates", tag="vmm-v0.3.0" }
+axcpu = { git = "https://github.com/arceos-org/axcpu.git" , tag="dev-v03" }
+axplat = { git = "https://github.com/arceos-org/axplat_crates.git", tag="dev-v03" }
 fdt-parser = "0.4"
 heapless = "0.8"
 lazyinit = "0.2"

@@ -10,11 +10,6 @@ struct TimeIfImpl;
 
 #[impl_plat_interface]
 impl TimeIf for TimeIfImpl {
-    /// Returns the IRQ number for the timer interrupt.
-    fn irq_num() -> usize {
-        TIMER_IRQ_CONFIG.irq.into()
-    }
-
     /// Returns the current clock time in hardware ticks.
     fn current_ticks() -> u64 {
         CNTPCT_EL0.get()
@@ -38,6 +33,12 @@ impl TimeIf for TimeIfImpl {
     /// clock start).
     fn epochoffset_nanos() -> u64 {
         0
+    }
+
+    /// Returns the IRQ number for the timer interrupt.
+    #[cfg(feature = "irq")]
+    fn irq_num() -> usize {
+        TIMER_IRQ_CONFIG.irq.into()
     }
 
     /// Set a one-shot timer.

@@ -150,6 +150,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 
 [[package]]
+name = "axbacktrace"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bf9566516f5d799b2f791a6ec5af57eec87d17624346f7c876fa006b922c99e6"
+dependencies = [
+ "cfg-if",
+ "log",
+ "spin 0.10.0",
+]
+
+[[package]]
 name = "axconfig-gen"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -173,11 +184,11 @@ dependencies = [
 
 [[package]]
 name = "axcpu"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e09bc1235e3da45e942b50f47812f8397ad84cb490264bf914c65ac44e6f8b1d"
+version = "0.3.0"
+source = "git+https://github.com/arceos-org/axcpu.git?tag=dev-v03#72ef3859952b7340bae261c9a50c32705e602017"
 dependencies = [
  "aarch64-cpu",
+ "axbacktrace",
  "cfg-if",
  "lazyinit",
  "linkme",
@@ -196,8 +207,8 @@ dependencies = [
 
 [[package]]
 name = "axplat"
-version = "0.2.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+version = "0.3.0"
+source = "git+https://github.com/arceos-org/axplat_crates.git?tag=dev-v03#72b148262f4f58a3a6c64c23d0f377e6469b662a"
 dependencies = [
  "axplat-macros",
  "bitflags 2.9.4",
@@ -206,6 +217,7 @@ dependencies = [
  "handler_table",
  "kspin",
  "memory_addr",
+ "percpu",
 ]
 
 [[package]]
@@ -238,7 +250,7 @@ dependencies = [
 [[package]]
 name = "axplat-macros"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+source = "git+https://github.com/arceos-org/axplat_crates.git?tag=dev-v03#72b148262f4f58a3a6c64c23d0f377e6469b662a"
 dependencies = [
  "proc-macro2",
  "quote",

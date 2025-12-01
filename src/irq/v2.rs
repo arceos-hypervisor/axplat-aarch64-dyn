@@ -28,26 +28,28 @@ pub fn init_current_cpu() {
     })
 }
 
-pub fn handle(_unused: usize) {
+pub fn handle(_unused: usize) -> Option<usize> {
     let ack = TRAP.ack();
-    let intid = match ack {
-        Ack::SGI { intid, cpu_id: _ } => intid,
-        Ack::Other(intid) => intid,
-    };
-    if intid.is_special() {
-        return;
+    if ack.is_special() {
+        return None;
     }
 
-    let irq_num = intid.to_u32();
-    // info!("IRQ {}", irq_num);
-    if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
-        warn!("Unhandled IRQ {irq_num}");
+    let irq_num = match ack {
+        Ack::Other(intid) => intid,
+        Ack::SGI { intid, cpu_id: _ } => intid,
+    }
+    .to_u32() as usize;
+
+    if !IRQ_HANDLER_TABLE.handle(irq_num) {
+        warn!("Unhandled IRQ {ack:?}");
     }
 
     TRAP.eoi(ack);
     if TRAP.eoi_mode_ns() {
         TRAP.dir(ack);
     }
+
+    Some(irq_num)
 }
 
 pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool) {
