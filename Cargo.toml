@@ -1,7 +1,7 @@
 [package]
 edition = "2024"
 name = "axplat-aarch64-dyn"
-version = "0.2.0"
+version = "0.4.0"
 
 [features]
 fp-simd = ["axcpu/fp-simd"]
@@ -15,8 +15,8 @@ aarch64-cpu-ext = "0.1"
 any-uart = "0.2.11"
 arm-gic-driver = {version = "0.15.3", features = ["rdif"]}
 axconfig-macros = "0.2"
-axcpu = "0.2"
-axplat = "0.2"
+axcpu = { git = "https://github.com/arceos-org/axcpu.git", tag="dev-v03" }
+axplat = { git = "https://github.com/arceos-org/axplat_crates.git", tag="dev-v03" }
 fdt-parser = "0.4"
 heapless = "0.8"
 lazyinit = "0.2"

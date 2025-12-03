@@ -35,6 +35,12 @@ impl TimeIf for TimeIfImpl {
         0
     }
 
+    /// Returns the IRQ number for the timer interrupt.
+    #[cfg(feature = "irq")]
+    fn irq_num() -> usize {
+        TIMER_IRQ_CONFIG.irq.into()
+    }
+
     /// Set a one-shot timer.
     ///
     /// A timer interrupt will be triggered at the specified monotonic time
@@ -79,14 +85,7 @@ pub fn enable() {
 /// It should be called on all CPUs, as the timer interrupt is a PPI (Private
 /// Peripheral Interrupt).
 pub fn enable_irqs() {
-    use crate::config::devices::TIMER_IRQ;
-
     let irq_raw: usize = TIMER_IRQ_CONFIG.irq.into();
-
-    assert_eq!(
-        irq_raw, TIMER_IRQ,
-        "axconfig.toml `timer-irq` must match the IRQ number used in the driver"
-    );
 
     crate::irq::set_enable(irq_raw, true);
 }

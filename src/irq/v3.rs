@@ -27,23 +27,26 @@ pub fn init_current_cpu() {
     });
 }
 
-pub fn handle(_unused: usize) {
+pub fn handle(_unused: usize) -> Option<usize> {
     let ack = TRAP.ack1();
-    let irq_num = ack.to_u32();
     if ack.is_special() {
-        return;
+        return None;
     }
+
+    let irq_num = ack.to_u32() as usize;
 
     // let cpu_id = current_cpu();
     // info!("[{cpu_id}] IRQ {}", irq_num);
-    if !IRQ_HANDLER_TABLE.handle(irq_num as _) {
-        warn!("Unhandled IRQ {irq_num}");
+    if !IRQ_HANDLER_TABLE.handle(irq_num) {
+        warn!("Unhandled IRQ {ack:?}");
     }
 
     TRAP.eoi1(ack);
     if TRAP.eoi_mode() {
         TRAP.dir(ack);
     }
+
+    Some(irq_num)
 }
 
 pub(crate) fn set_enable(irq_raw: usize, trigger: Option<Trigger>, enabled: bool) {
@@ -116,4 +119,3 @@ pub fn send_ipi(id: usize, target: axplat::irq::IpiTarget) {
         },
     );
 }
-
