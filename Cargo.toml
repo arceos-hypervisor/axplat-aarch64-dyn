@@ -18,7 +18,7 @@ axconfig-macros = "0.2"
 axcpu = { git = "https://github.com/arceos-org/axcpu.git", tag="dev-v03" }
 axplat = { git = "https://github.com/arceos-org/axplat_crates.git", tag="dev-v03" }
 fdt-parser = "0.4"
-heapless = "0.8"
+heapless = "0.9"
 lazyinit = "0.2"
 log = "0.4"
 memory_addr = "0.4"
@@ -32,5 +32,5 @@ spin = "0.10"
 
 [build-dependencies]
 serde = {version = "1.0", features = ["derive"]}
-toml = "0.8"
+toml = "0.9"
 

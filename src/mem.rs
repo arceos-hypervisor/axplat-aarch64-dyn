@@ -43,7 +43,10 @@ pub fn setup() {
             fn _skernel();
         }
         let head_start = boot_info().kimage_start_lma as usize;
-        let head_section = (head_start, (_skernel as usize) - va_offset() - head_start);
+        let head_section = (
+            head_start,
+            (_skernel as *const () as usize) - va_offset() - head_start,
+        );
 
         rsv_list.push(head_section).unwrap();
 
@@ -148,6 +151,6 @@ fn kimage_range_phys() -> Range<PhysAddr> {
     }
 
     let start = PhysAddr::from_usize(boot_info().kimage_start_lma as usize);
-    let end = PhysAddr::from_usize(_ekernel as usize - va_offset());
+    let end = PhysAddr::from_usize(_ekernel as *const () as usize - va_offset());
     start..end
 }
