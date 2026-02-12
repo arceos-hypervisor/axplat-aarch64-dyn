@@ -29,4 +29,16 @@ impl PowerIf for PowerImpl {
     fn system_off() -> ! {
         somehal::power::shutdown()
     }
+
+    /// Get the number of CPU cores available on this platform.
+    fn cpu_num() -> usize {
+        #[cfg(feature = "smp")]
+        {
+            crate::smp::get_cpu_num()
+        }
+        #[cfg(not(feature = "smp"))]
+        {
+            1
+        }
+    }
 }

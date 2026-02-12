@@ -175,9 +175,9 @@ dependencies = [
 
 [[package]]
 name = "axcpu"
-version = "0.3.0-preview.3"
+version = "0.3.0-preview.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5eeabf0939995cb9bcc17c8f7b49099eba7ce13fb811da1071186b584cad2656"
+checksum = "627bdaa84f4a3c10e4e3858e7e671463d4dbeac6867643340a06d56d8ce24d24"
 dependencies = [
  "aarch64-cpu",
  "axbacktrace",
@@ -199,9 +199,9 @@ dependencies = [
 
 [[package]]
 name = "axplat"
-version = "0.3.0-preview.2"
+version = "0.3.1-pre.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "92cadeaefb5b95b1617dd76c0b3e1191b73dcc295f42aad7716636027cab6151"
+checksum = "db118726e9df52c3636fd34c474e92a3a8c6a2f685724d8e8f924917ba0acb26"
 dependencies = [
  "axplat-macros",
  "bitflags 2.10.0",

@@ -67,3 +67,7 @@ pub fn cpu_id_to_idx(cpu_id: usize) -> usize {
         panic!("CPU ID {} not found in the list", cpu_id);
     }
 }
+
+pub fn get_cpu_num() -> usize {
+    CPU_ID_LIST.wait().len()
+}

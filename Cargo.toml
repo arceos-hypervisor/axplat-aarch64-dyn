@@ -20,8 +20,8 @@ aarch64-cpu-ext = "0.1"
 any-uart = "0.2.11"
 arm-gic-driver = {version = "0.15.3", features = ["rdif"]}
 axconfig-macros = "0.2"
-axcpu = { version = "0.3.0-preview.2" }
-axplat = ">=0.3.0-preview.2, <0.3.0"
+axcpu = "0.3.0-preview.4"
+axplat = "0.3.1-pre.1"
 fdt-parser = "0.4"
 heapless = "0.9"
 lazyinit = "0.2"
